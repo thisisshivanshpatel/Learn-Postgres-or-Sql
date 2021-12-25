@@ -30,7 +30,7 @@ email VARCHAR(120) );
 
 - \d =>To list the tables(relations) <b>(psql)</b>
 
-- \d tablename=>To view table details
+- \d tablename=>To view table details <b>(psql)</b>
 
 ```SQL
 DROP TABLE table name
@@ -116,9 +116,37 @@ LIMIT 10;
 ```
 
 ### WHERE
+- The where clause is used to retrieve only those records that fulfill a specified criterion
 
-- 
+``` SQL
+SELECT column_list
+FROM table_name
+WHERE condition;
+```
+
+#### e.g:-
+``` SQL
+SELECT * FROM people
+WHERE id=10;
+```
+
+### BETWEEN
+- The Between operator selects values with in a range.The first value must be lower bound and the second value the upper bound 
+
+``` SQL
+SELECT * FROM people
+WHERE id BETWEEN 3 AND 7;
+```
+
+### LOGICAL OPERATOR [AND,OR,IN,NOT]
+
+- Logical operator can be used to combine two boolean values and return a result of true,false or null
+
+```SQL
+SELECT * FROM people
+WHERE id >=4 AND id <=10;
+```
+
+
 ## Authors
-
 - [@thisisshivanshpatel](https://www.github.com/thisisshivanshpatel)
-
