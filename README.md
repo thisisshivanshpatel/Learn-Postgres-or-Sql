@@ -1,17 +1,23 @@
-- \l => list all the available databases <b>(psql)</b>
 
-
+### Creating a Database
 ``` SQL
 CREATE DATABASE dbname
 ```
+
+- \l => list all the available databases <b>(psql)</b>
 =>To create a new database
 
 - \c dbname =>connect to the database <b>(psql)</b>
+- \i filepath =>To execute a specific sql file
+
+### Deleting a database
 
 ```SQL
 DROP DATABASE 
 ```
 => To delete the database
+
+### Creating a table
 
 ```SQL
 CREATE TABLE table-name
@@ -32,10 +38,7 @@ email VARCHAR(120) );
 
 - \d tablename=>To view table details <b>(psql)</b>
 
-```SQL
-DROP TABLE table name
-```
-=>To DROP a specific table
+### Inserting data into the table
 
 ```SQL
 INSERT INTO tablename(col_name,..) VALUES('value')
@@ -47,6 +50,16 @@ INSERT INTO tablename(col_name,..) VALUES('value')
 INSERT INTO person(name,gender,dob,email)
 VALUES ('shivansh patel','MALE','1999-10-02','shivanshpatel.1999@gmail.com');
 ```
+
+### Deleting a table
+
+```SQL
+DROP TABLE table name
+```
+=>To DROP a specific table
+
+### Selecting from a table
+
 ```SQL
 SELECT * FROM table_name;
 ``` 
@@ -57,11 +70,13 @@ SELECT column_name FROM table_name;
 ```
 =>to view only specific column
 
+### Listing Databases
 ``` SQL
 SHOW DATABASES
 ```
 =>To list all the databases
 
+### Listing Tables
 ``` SQL
 SHOW TABLES
 ```
@@ -210,11 +225,11 @@ SELECT CONCAT(first_name,' ',last_name) AS Name FROM people;
 
 name|
 --------------------
- Carolina Draycott
- Mendie Lethebridge
- Minda Philipsen
- Tresa Drewe
- Jill Lyosik
+ Carolina Draycott  |
+ Mendie Lethebridge |
+ Minda Philipsen    |
+ Tresa Drewe        |
+ Jill Lyosik        |
 
 ### Arithmetic operators
 - we can also use Arithmetic operators to perform Arithmetic operations(+,-,*,/) on any column
@@ -282,6 +297,109 @@ ORDER BY salary DESC;
 SELECT * FROM people
 WHERE first_name LIKE 'A%';
 ```
+### joins
+
+- To join the two tables,specify them as a comma-separated list in the FROM clause
+
+```SQL
+SELECT customer.id,customer.name,orders.name,orders.amount
+From customer,orders
+WHERE customer.id=orders.customer_id
+ORDER BY customer.id;
+```
+
+ id |      name      |     name      | amount
+----|----------------|---------------|--------
+  1 | shivansh patel | Gaming Laptop |  55000
+  2 | Anurag patel   | Books         |   1500
+  3 | Gaurav singh   | play station  |  50000
+  4 | Piyush Kumar   | Bag           |   1800
+  5 | Ajay parab     | SmartPhone    |  20000
+
+#### INNER JOIN
+- **INNER JOIN** is equivalent to join.it returns rows when there is a match between the tables
+
+```SQL
+SELECT customer.id,customer.name,orders.name,orders.amount
+From customer INNER JOIN orders
+ON customer.id=orders.customer_id
+ORDER BY customer.id;
+```
+#### LEFT JOIN
+- **LEFT JOIN** returns all rows from the left table,even if there are no matches in the right table
+
+```SQL
+SELECT customer.id,customer.name,orders.name,orders.amount
+From customer LEFT OUTER JOIN orders
+ON customer.id=orders.customer_id
+ORDER BY customer.id;
+```
+
+#### RIGHT JOIN
+- **RIGHT JOIN** returns all rows from the right table,even if there are no matches in the left table
+
+- **OUTER** keyword is optional and can be omitted
+```SQL
+SELECT customer.id,customer.name,orders.name,orders.amount
+From customer RIGHT OUTER JOIN orders
+ON customer.id=orders.customer_id
+ORDER BY customer.id;
+```
+
+### UNION
+- The **UNION** operator is used to combine the result-set of two or more SELECT statements
+- It remove all the duplicate records
+- All select statements with in the UNION must have the same number of columns.The columns must also have the same data types.Also the columns in each SELECT statement must be in the same order
+
+#### syntax:-
+
+```SQL
+SELECT column_name(s) FROM TABLE1
+UNION
+SELECT column_name(s) FROM TABLE2
+```
+
+### UNION ALL
+- **UNION ALL** selects all rows from each table and combines them into a single table
+- It did'nt remove duplicate records
+ - **UNION ALL** is faster than UNION,as it does not remove the duplicate records
+
+```SQL
+SELECT column_name(s) FROM TABLE1
+UNION ALL
+SELECT column_name(s) FROM TABLE2
+```
+
+### UPDATE 
+- **UPDATE** statement allows us to update data in the table
+
+#### syntax:-
+```SQL
+UPDATE table_name
+SET column1=value1,column2=value2,..
+WHERE ID=5;
+```
+
+```SQL
+UPDATE orders
+SET amount=37000
+WHERE ID=5;
+```
+### DELETE
+- **DELETE** statement is used to delete specific data from your table
+- if you omit the where clause all records in the table will be deleted
+
+#### syntax:-
+```SQL
+DELETE FROM table_name
+WHERE condition
+```
+
+```SQL
+DELETE FROM Employees
+WHERE ID=1;
+```
+
 
 ## Authors
 - [@thisisshivanshpatel](https://www.github.com/thisisshivanshpatel)
