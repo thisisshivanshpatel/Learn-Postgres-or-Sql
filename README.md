@@ -1,3 +1,5 @@
+![LOGO](https://res.cloudinary.com/du4mbzbao/image/upload/v1640589738/my%20projects/postgres_umx4eu.png)
+
 
 ### Creating a Database
 ``` SQL
@@ -400,6 +402,61 @@ DELETE FROM Employees
 WHERE ID=1;
 ```
 
+### ALTER TABLE
 
+#### Adding new column
+
+```SQL
+ ALTER TABLE customer ADD Number_of_purchase int;
+```
+
+#### Renaming a column
+
+```SQL
+ALTER TABLE customer
+RENAME number_of_purchase TO purchase;
+```
+
+### Renaming a Table
+
+```SQL
+RENAME TABLE people TO Users;
+```
+
+#### Dropping a column
+
+```SQL
+ALTER TABLE customer
+DROP COLUMN purchase;
+```
+
+### Views
+
+- in SQL, a view is a Virtual table that is based on the result-set of an SQL statement
+
+#### syntax:-
+```SQL
+CREATE VIEW view_name AS
+SELECT column_name(s)
+FROM table_name
+WHERE condition
+```
+
+```SQL
+CREATE VIEW pay AS
+SELECT customer_id,amount
+FROM orders;
+```
+- **view** always shows up-to-date data
+
+#### Updating a View
+
+
+
+#### Dropping a view
+
+```SQL
+DROP VIEW pay;
+```
 ## Authors
 - [@thisisshivanshpatel](https://www.github.com/thisisshivanshpatel)
