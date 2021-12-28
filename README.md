@@ -1,5 +1,4 @@
-![LOGO](https://res.cloudinary.com/du4mbzbao/image/upload/v1640589738/my%20projects/postgres_umx4eu.png)
-
+<img src="https://res.cloudinary.com/du4mbzbao/image/upload/v1640589738/my%20projects/postgres_umx4eu.png" alt="postgres logo" width="250"/>
 
 ### Creating a Database
 ``` SQL
@@ -431,7 +430,7 @@ DROP COLUMN purchase;
 ```
 
 ### Views
-
+- A view is a named query that provides another way to present data in the database tables. A view is defined based on one or more tables which are known as base tables. When you create a view, you basically create a query and assign a name to the query. Therefore, a view is useful for wrapping a commonly used complex query.
 - in SQL, a view is a Virtual table that is based on the result-set of an SQL statement
 
 #### syntax:-
