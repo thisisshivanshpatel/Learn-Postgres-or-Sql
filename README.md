@@ -1,4 +1,4 @@
-<img src="https://res.cloudinary.com/du4mbzbao/image/upload/v1640589738/my%20projects/postgres_umx4eu.png" alt="postgres logo" width="250"/>
+<img src="postgreslogo.png" alt="postgres logo" width="250"/>
 
 ### Creating a Database
 ``` SQL
@@ -114,6 +114,12 @@ FROM table_name
 OFFSET [position]
 LIMIT [number of records]
 ```
+### FETCH
+- **FETCH** is the official way to limit the number of rows
+
+``` SQL
+SELECT * FROM person OFFSET 5 FETCH FIRST 10 ROW ONLY;
+```
 
 ### ORDER BY
 -  We can use order by to sort data based on sigle or multiple column by default it sorts in ASCENDING ORDER
@@ -130,6 +136,43 @@ SELECT DISTINCT country_of_birth from people
 ORDER BY country_of_birth
 LIMIT 10;
 ```
+
+### GROUP BY
+
+- used for grouping
+
+```SQL
+SELECT country_of_birth,COUNT(*) FROM people
+GROUP BY country_of_birth
+ORDER BY country_of_birth;
+```
+
+country_of_birth|count
+----------------|-----
+ Afghanistan    | 8
+ Albania        |2
+ Angola         |1
+ Argentina      |9
+
+### HAVING
+
+- used for filtering
+
+```SQL
+SELECT country_of_birth,COUNT(*) FROM people
+GROUP BY country_of_birth
+HAVING COUNT(*)>12
+ORDER BY country_of_birth;
+```
+
+ country_of_birth | count
+------------------|-------
+ Brazil           |    22
+ China            |   135
+ Indonesia        |    76
+ Japan            |    22
+ Philippines      |    36
+ Poland           |    20
 
 ### WHERE
 - The where clause is used to retrieve only those records that fulfill a specified criterion
@@ -275,8 +318,80 @@ LIMIT 5;
 ### SQRT,AVG,SUM,MIN FUNCTIONS
 - **SQRT** function return the square root of given value in the argument
 - **AVG** function return the Average of given value in the argument
+
+```SQL
+ SELECT AVG(price) from car;
+```
+|         avg      |  
+|------------------|
+|507730.73883000000|
+
+- **ROUND** function rounds the given value
+
+```SQL
+SELECT ROUND(AVG(price)) from car;
+```
+
+| round |
+|-------|
+| 507731|
 - **SUM** function return the sum of given value in the argument
-- **MIN** function return the MINIMUM of given value in the argument
+- **MIN** function return the MINIMUM
+
+```SQL
+ SELECT model,MIN(price) FROM car GROUP BY model;
+```
+|         model          |    min
+-------------------------|-----------
+ 300E                    | 851838.83
+ Suburban 2500           |  94046.29
+ Regal                   |  37935.14
+ Grand Am                | 335841.12
+ Patriot                 | 598906.50
+ G5                      | 283470.80
+ Econoline E150          | 780674.94
+ Sportvan G20            | 217390.31
+
+- **Max** function returns the Maximum 
+
+```SQL
+SELECT MAX(price) from car;
+```
+
+### COALESCE
+- Return the first non-null value in a list
+
+```SQL
+SELECT COALESCE(email,'email not provided') FROM people;
+```
+|              coalesce             |
+------------------------------------|
+ cdraycott0@privacy.gov.au          |
+  email not provided                |
+ mphilipsen2@reverbnation.com       |
+ email not provided                 |
+ jlyosik4@livejournal.com           |
+ dbunhill5@zdnet.com                |
+
+
+### NULLIF
+
+- The **NULLIF()** function returns NULL if two expressions are equal, otherwise it returns the first expression.
+
+```SQL
+SELECT 10/NULLIF(2,9) AS divide;
+```
+
+| divide|
+--------|
+  5     |
+
+```SQL
+SELECT 10/NULLIF(0,0) AS divide;
+```
+|divide|
+-------|
+  .    |
 
 ### Subqueries
 - A subquery is a query within another query
@@ -288,8 +403,8 @@ ORDER BY salary DESC;
 ```
 
 ### Like operator
-- The Like keyword is useful when specifying a search condition within your WHERE clause
-
+- The **Like** keyword is useful when specifying a search condition within your WHERE clause
+- **Like** keyword is case sensitive
 - if you use the % sign before any specific letter it will return the result ending with that letter
 
 - if you use the % sign After any specific letter it will return the result starting with that letter
@@ -298,6 +413,70 @@ ORDER BY salary DESC;
 SELECT * FROM people
 WHERE first_name LIKE 'A%';
 ```
+```SQL
+SELECT * FROM people
+WHERE email LIKE '%@gmail.com';
+```
+ id  | first_name |        email
+-----|------------|---------------------
+ 205 | Anton      | aolivo5o@google.com
+
+
+```SQL
+SELECT * FROM people
+WHERE email LIKE '%@google.%';
+```
+ id  | first_name |           email
+-----|------------|---------------------------
+ 156 | Tommie     | tbrunner4b@google.co.jp
+ 169 | Dwight     | dsaywood4o@google.com.au
+ 190 | Reese      | rpudney59@google.es
+ 205 | Anton      | aolivo5o@google.com
+ 213 | Chelsie    | ckemm5w@google.de
+ 488 | Josey      | jfawlodj@google.co.jp
+ 533 | Farand     | fastmanes@google.es
+ 677 | Rustie     | rteeceis@google.ru
+ 701 | Christen   | csturzakerjg@google.it
+ 895 | Etti       | ewhittletonou@google.nl
+ 961 | Lacey      | lhandlinqo@google.co.uk
+
+- This one 👆 is used to match only center characters
+
+```SQL
+SELECT * FROM people
+WHERE email LIKE '______@%';
+```
+- - This one 👆 is used to match only single characters
+
+### ILIKE
+- **ILIKE** keyword basically ignores the cases 
+
+```SQL
+SELECT * FROM people
+WHERE country ILIKE '%p';
+```
+
+### FOREIGN KEY
+
+- A FOREIGN KEY is a field (or collection of fields) in one table, that refers to the PRIMARY KEY in another table.
+
+- The table with the foreign key is called the child table, and the table with the primary key is called the referenced or parent table.
+
+```SQL
+create table people (
+	id BIGSERIAL NOT NULL PRIMARY KEY,
+	first_name VARCHAR(50) NOT NULL,
+	last_name VARCHAR(50) NOT NULL,
+	gender VARCHAR(50) NOT NULL,
+	email VARCHAR(50),
+	date_of_birth DATE,
+	country_of_birth VARCHAR(50),
+    car_id BIGINT REFERENCES car (id),
+    UNIQUE(car_id)
+);
+```
+- The following SQL creates a FOREIGN KEY on the "car_id" column when the "people" table is created
+
 ### joins
 
 - To join the two tables,specify them as a comma-separated list in the FROM clause
