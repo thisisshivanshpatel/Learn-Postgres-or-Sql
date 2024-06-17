@@ -35,6 +35,25 @@ dob DATE NOT NULL,
 email VARCHAR(120) );
 ```
 
+### Auto incrementing columns
+
+In PostgreSQL, you can add an auto-increment column to a new table using the `SERIAL` pseudo-type:
+
+**Syntax**:- 
+``` SQL
+CREATE TABLE table_name(id SERIAL)
+```
+
+**Explanation**: `SERIAL` is shorthand for creating an auto-incrementing, unique identifier column. When you use SERIAL, PostgreSQL creates a sequence object, sets the next value from the sequence as the column's default value, and adds a NOT NULL constraint to the column. This is because sequences always generate integers, which are non-null values. 
+
+**UUID**:
+You can also use the `uuid_generate_v4` function from the `uuid-ossp` extension to generate universally unique identifiers (UUIDs). UUIDs are 128-bit numbers that are very unlikely to be duplicated
+
+you need to install the extension in each database where you are going to use it:
+
+``` SQL
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+```
 - \d =>To list the tables(relations) <b>(psql)</b>
 
 - \d tablename=>To view table details <b>(psql)</b>
@@ -593,6 +612,12 @@ WHERE ID=1;
 ```SQL
 ALTER TABLE customer
 RENAME number_of_purchase TO purchase;
+```
+
+### Changing DataType of the column
+
+```SQL
+ALTER TABLE table_name ALTER COLUMN column_name TYPE new_data_type
 ```
 
 ### Renaming a Table
