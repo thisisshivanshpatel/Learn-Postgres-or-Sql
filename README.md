@@ -661,5 +661,70 @@ FROM orders;
 ```SQL
 DROP VIEW pay;
 ```
+
+## Views and Materialized Views
+These are database objects that present data in a structured way, but they differ fundamentally in how they store and retrieve data.
+
+### View (Virtual View)
+A view is a virtual table based on the result set of a SQL query. It doesn't store data physically.
+
+Key characteristics:
+
+- No physical storage: The query is executed every time the view is accessed
+- Always current: Reflects the latest data from underlying tables
+- Dynamic: Changes to base tables are immediately visible
+- Read-only (typically): Most views don't allow direct INSERT/UPDATE/DELETE operations
+- Fast definition: Created quickly since no data storage is needed
+- Slower queries: Each access requires re-executing the underlying query
+
+Example:
+
+```sql
+CREATE VIEW customer_orders AS
+SELECT c.customer_id, c.name, COUNT(o.order_id) as total_orders
+FROM customers c
+LEFT JOIN orders o ON c.customer_id = o.customer_id
+GROUP BY c.customer_id, c.name;
+```
+
+## Materialized View
+A materialized view is a physical copy of the query result stored as a table in the database.
+
+Key characteristics:
+
+- Physical storage: Data is actually stored on disk
+- Snapshot of data: Represents data at a specific point in time
+- Faster queries: No need to re-execute the underlying query
+- Requires refresh: Must be explicitly refreshed to update data
+- Uses disk space: Consumes storage resources
+- Can be indexed: Indexes can be created for better performance
+
+Example:
+
+```sql
+CREATE MATERIALIZED VIEW customer_orders AS
+SELECT c.customer_id, c.name, COUNT(o.order_id) as total_orders
+FROM customers c
+LEFT JOIN orders o ON c.customer_id = o.customer_id
+GROUP BY c.customer_id, c.name;
+```
+
+Refresh materialized view: `REFRESH MATERIALIZED VIEW customer_orders;`
+
+Comparison:
+
+| Feature        | View                 | Materialized View        |
+|----------------|----------------------|--------------------------|
+| Storage        | Virtual (no disk)    | Physical (disk)          |
+| Data Currency  | Always current       | As of last refresh       |
+| Query Speed    | Slower               | Faster                   |
+| Disk Space     | Minimal              | Significant              |
+| Maintenance    | None                 | Requires refresh         |
+| Use Case       | Real-time, simple queries | Complex queries, reporting |
+
+### When to Use Each
+Use Views when you need real-time data, have simple queries, or want to restrict user access to certain columns
+Use Materialized Views when you have complex queries that take time, need fast reporting, or can tolerate slightly outdated data
+
 ## Authors
 - [@thisisshivanshpatel](https://www.github.com/thisisshivanshpatel)
